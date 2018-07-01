@@ -1,8 +1,8 @@
+#Lineáris regresszió megoldása a  kapott feladatra a linkelt modulok segítségével
+
 import numpy as np
 import matplotlib.pyplot as plt
-
 from sklearn import linear_model
-
 
 X=[]
 Y=[]
@@ -15,22 +15,74 @@ plt.plot(X,Y,'rx')
 plt.axis([4,24,(-5),25])
 plt.xlabel('Population of City in 10,000s')
 plt.ylabel('Profit in $10,000s')
-#plt.show()
 
 xmatrix = np.ones([len(X),1])
 xmatrix[:,0] = X
 X = xmatrix
 
-
 regr = linear_model.LinearRegression()
-
 regr.fit(X,Y)
-
 Y_pred = regr.predict(X)
 
 print(regr.coef_)
 
-
 plt.plot(X, Y_pred, color='blue', linewidth=1)
-
 plt.show()
+
+
+
+#Lineáris regresszió megoldása a  feladat leírása szerint
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+X=[]
+y=[]
+mfile = open('ex1data1.txt','r')
+for row in mfile:
+    X.append(float(row[:row.find(',')]))
+    y.append(float(row[row.find(',')+1:-1]))
+
+plt.plot(X,y,'rx')
+plt.axis([4,24,(-5),25])
+plt.xlabel('Population of City in 10,000s')
+plt.ylabel('Profit in $10,000s')
+#plt.show()
+
+xmatrix = np.ones([len(X),2])
+xmatrix[:,1] = X
+X = xmatrix
+
+ymatrix = np.ones([len(X),1])
+ymatrix[:,0] = y
+y = xmatrix
+
+theta = np.zeros([1,2])
+alpha=0.01
+iters = 1500
+
+
+def computeCost(X,y,theta):
+    sum=0
+    for i in range(len(X)):
+        sum += np.sum((theta*X[i,:] - y[i,:])**2,axis=1)
+    return sum / (2 * len(X))
+
+print(computeCost(X,y,theta))
+
+
+def gradientDescent(X,y,theta,alpha,iters):
+    cost = computeCost(X,y,theta)
+    theta = theta
+    for j in range(iters):
+        sum = 0
+        for i in range(len(X)):
+            sum += np.sum(theta * (X[i, :] - y[i, :]) * X[i,:], axis=1)
+        newtheta = theta - ((alpha) * sum / len(X))
+        newcost = computeCost(X,y,theta)
+        if newcost < cost:
+            cost = newcost
+            theta = newtheta
+    return theta,cost
+
+print(gradientDescent(X,y,theta,alpha,iters))
