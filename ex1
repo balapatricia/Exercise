@@ -1,37 +1,3 @@
-#Lineáris regresszió megoldása a  kapott feladatra a linkelt modulok segítségével
-
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import linear_model
-
-X=[]
-Y=[]
-mfile = open('ex1data1.txt','r')
-for row in mfile:
-    X.append(float(row[:row.find(',')]))
-    Y.append(float(row[row.find(',')+1:-1]))
-
-plt.plot(X,Y,'rx')
-plt.axis([4,24,(-5),25])
-plt.xlabel('Population of City in 10,000s')
-plt.ylabel('Profit in $10,000s')
-
-xmatrix = np.ones([len(X),1])
-xmatrix[:,0] = X
-X = xmatrix
-
-regr = linear_model.LinearRegression()
-regr.fit(X,Y)
-Y_pred = regr.predict(X)
-
-print(regr.coef_)
-
-plt.plot(X, Y_pred, color='blue', linewidth=1)
-plt.show()
-
-
-
-#Lineáris regresszió megoldása a  feladat leírása szerint
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -53,9 +19,9 @@ xmatrix = np.ones([len(X),2])
 xmatrix[:,1] = X
 X = xmatrix
 
-ymatrix = np.ones([len(X),1])
+ymatrix = np.ones([len(y),1])
 ymatrix[:,0] = y
-y = xmatrix
+y = ymatrix
 
 theta = np.zeros([1,2])
 alpha=0.01
@@ -65,24 +31,28 @@ iters = 1500
 def computeCost(X,y,theta):
     sum=0
     for i in range(len(X)):
-        sum += np.sum((theta*X[i,:] - y[i,:])**2,axis=1)
+        sum += ((theta[:,0]+theta[:,1]*X[i,1]) - y[i,0])**2
     return sum / (2 * len(X))
 
-print(computeCost(X,y,theta))
 
 
 def gradientDescent(X,y,theta,alpha,iters):
-    cost = computeCost(X,y,theta)
-    theta = theta
+    cost = computeCost(X, y, theta)
+    theta=theta
+    thetheta = theta
     for j in range(iters):
-        sum = 0
-        for i in range(len(X)):
-            sum += np.sum(theta * (X[i, :] - y[i, :]) * X[i,:], axis=1)
-        newtheta = theta - ((alpha) * sum / len(X))
-        newcost = computeCost(X,y,theta)
-        if newcost < cost:
+        sum = np.sum(((theta[:, 0] + theta[:, 1] * X[:, 1]) - y[:, 0]) * X[:,0])
+        newtheta = theta - ((alpha * sum) / len(X))
+        newcost = computeCost(X,y,newtheta)
+        if newcost<cost:
             cost = newcost
-            theta = newtheta
-    return theta,cost
+            thetheta = newtheta
+        theta = newtheta
+    return thetheta,cost
 
-print(gradientDescent(X,y,theta,alpha,iters))
+
+g,c=gradientDescent(X,y,theta,alpha,iters)
+print(g,c)
+
+plt.plot(X,(g[:,0]+g[:,1]*X), color='blue', linewidth=1)
+plt.show()
