@@ -1,0 +1,28 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+xfile = open("ex2data1.txt",'r')
+
+X = []
+y = []
+addm = []
+for row in xfile:
+    X.append(float(row[:row.find(',')]))
+    y.append(float(row[row.find(',') + 1:row.rfind(',')]))
+    addm.append((row[row.rfind(',')+1:-1]))
+
+negX = []
+negy = []
+posX = []
+posy = []
+for i in range(len(X)):
+    if addm[i] == '0':
+        negX.append(X[i])
+        negy.append(y[i])
+    else:
+        posX.append(X[i])
+        posy.append(y[i])
+
+
+plt.plot(negX,negy,'yo')
+plt.plot(posX,posy,'k+')
