@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -26,3 +27,32 @@ for i in range(len(X)):
 
 plt.plot(negX,negy,'yo')
 plt.plot(posX,posy,'k+')
+
+Xmatrix = np.ones([len(X),1])
+Xmatrix[:,0] = X
+X = Xmatrix
+
+ymatrix = np.ones([len(y),1])
+ymatrix[:,0] = y
+y = ymatrix
+
+theta = np.ones([len(X),1])
+
+def sigmoid(z):
+    return 1 / ( 1 + (math.e ** (-z)))
+
+
+def gradientDescent(X,y,theta):
+    for j in range(len(X)):
+        theta[j,0] = (np.sum(sigmoid(theta[:,0]*X[:,0]) - y[:,0])) * X[:,0] / len(X)
+    return theta
+
+
+
+def computeCost(X,y,theta):
+    sum = 0
+    for i in range(len(X)):
+        sum += (-y[i,0]) * math.log10(sigmoid(theta[i,0]*X[i,0])) - (1-y[i,0]) * math.log10(1 - (sigmoid(theta[i,0]*X[i,0])))
+    return sum / len(X)
+
+print(computeCost(X,y,theta))
