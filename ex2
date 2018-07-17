@@ -36,13 +36,14 @@ ymatrix = np.ones([len(y),1])
 ymatrix[:,0] = y
 y = ymatrix
 
-theta = np.ones([len(X),1])
+
 
 def sigmoid(z):
     return 1 / ( 1 + (math.e ** (-z)))
 
 
-def gradientDescent(X,y,theta):
+def gradientDescent(X,y):
+    theta = np.ones([len(X),1])
     for j in range(len(X)):
         theta[j,0] = (np.sum(sigmoid(theta[:,0]*X[:,0]) - y[:,0])) * X[:,0] / len(X)
     return theta
