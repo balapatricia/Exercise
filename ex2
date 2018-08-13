@@ -54,7 +54,7 @@ def computeCost(X,y,theta):
 #print(computeCost(X,y,theta))
 
 
-def gradientDescent(X,y,theta,iters,alpha):
+def gradientDescent(X,y,theta,iters):
     cost = computeCost(X,y,theta)
     theta = theta
     thetheta = theta
@@ -70,7 +70,7 @@ def gradientDescent(X,y,theta,iters,alpha):
         theta = newtheta
     return thetheta, cost
 
-g ,cost = (gradientDescent(X,y,theta,iters,alpha))
+g ,cost = (gradientDescent(X,y,theta,iters))
 
 plt.plot(X, (g[:,0]+g[:,1]*X[:,0]+g[:,2]*y[:,0]), color='blue', linewidth=1)
 plt.show()
