@@ -39,10 +39,12 @@ y = ymatrix
 
 theta = np.zeros([1,3])
 iters = 1500
-alpha = 0.01
+
 
 def sigmoid(z):
     return 1 / ( 1 + (math.e ** (-z)))
+
+print(np.sum((np.sum(sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * y[:,0]) - y[:,0]))*X[:,0])/len(X))
 
 
 def computeCost(X,y,theta):
@@ -58,11 +60,35 @@ def gradientDescent(X,y,theta,iters):
     cost = computeCost(X,y,theta)
     theta = theta
     thetheta = theta
-    for i in range(iters):
-        newtheta = np.zeros([1, 3])
-        newtheta[:, 0] = np.sum(((sigmoid(theta[:, 0] + theta[:, 1] * X[:, 0] + theta[:, 2] * y[:, 0])) - y[:, 0]) * 1) / len(X)
-        newtheta[:, 1] = np.sum(((sigmoid(theta[:, 0] + theta[:, 1] * X[:, 0] + theta[:, 2] * y[:, 0])) - y[:, 0]) * X[:, 0]) / len(X)
-        newtheta[:, 2] = np.sum(((sigmoid(theta[:, 0] + theta[:, 1] * X[:, 0] + theta[:, 2] * y[:, 0])) - y[:, 0]) * y[:, 0]) / len(X)
+    for k in range(iters):
+        newtheta = theta
+        d1 = (np.sum((np.sum(sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * y[:,0]) - y[:,0]))*1)/len(X))
+        if d1 <= (-100):
+            newtheta[:,0] = newtheta[:,0] + 100
+        elif d1 <= 0:
+            newtheta[:, 0] = newtheta[:, 0] + 1
+        elif 100 <= d1:
+            newtheta[:, 0] = newtheta[:, 0] - 100
+        else:
+            newtheta[:, 0] = newtheta[:, 0] - 1
+        d2 = (np.sum((np.sum(sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * y[:,0]) - y[:,0]))*X[:,0])/len(X))
+        if d2 <= (-100):
+            newtheta[:,1] = newtheta[:,1] + 100
+        elif d2 <= 0:
+            newtheta[:, 1] = newtheta[:, 1] + 1
+        elif 100 <= d2:
+            newtheta[:, 1] = newtheta[:, 1] - 100
+        else:
+            newtheta[:, 1] = newtheta[:, 1] - 1
+        d3 = (np.sum((np.sum(sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * y[:,0]) - y[:,0]))*y[:,0])/len(X))
+        if d3 <= (-100):
+            newtheta[:,2] = newtheta[:,2] + 100
+        elif d3 <= 0:
+            newtheta[:, 2] = newtheta[:, 2] + 1
+        elif 100 <= d3:
+            newtheta[:, 2] = newtheta[:, 2] - 100
+        else:
+            newtheta[:, 2] = newtheta[:, 2] -1
         newcost = computeCost(X, y, newtheta)
         if newcost < cost:
             cost = newcost
