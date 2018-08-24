@@ -63,11 +63,11 @@ def gradientDescent(X,y,theta,iters,alpha):
     thetheta = theta
     for k in range(iters):
         newtheta = theta
-        d1 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,0]) - y[:,0])*1)/len(X)
+        d1 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,1]) - y[:,0])*1)/len(X)
         newtheta[:,0] = theta[:,0] - (alpha * d1)
-        d2 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,0]) - y[:,0])*X[:,0])/len(X)
+        d2 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,1]) - y[:,0])*X[:,0])/len(X)
         newtheta[:,1] = theta[:, 1] - (alpha * d2)
-        d3 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,0]) - y[:,0])*X[:,1])/len(X)
+        d3 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,1]) - y[:,0])*X[:,1])/len(X)
         newtheta[:,2] = theta[:, 2] - (alpha * d3)
         print(newtheta)
         newcost = computeCost(X, y, newtheta)
@@ -82,11 +82,5 @@ g ,cost = (gradientDescent(X,y,theta,iters,alpha))
 
 plt.plot((g[:,0]+g[:,1]*X+g[:,2]*y), color='blue', linewidth=1)
 plt.show()
-
-
-
-
-
-
 
 
