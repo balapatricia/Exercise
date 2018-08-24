@@ -44,7 +44,7 @@ iters = 1500
 def sigmoid(z):
     return 1 / ( 1 + (math.e ** (-z)))
 
-print(np.sum((np.sum(sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * y[:,0]) - y[:,0]))*X[:,0])/len(X))
+
 
 
 def computeCost(X,y,theta):
@@ -53,7 +53,7 @@ def computeCost(X,y,theta):
         sum += (-y[i,0]) * math.log(sigmoid(theta[:,0] + theta[:,1] * X[i,0] + theta[:,2] * y[i,0])) - (1-y[i,0]) * math.log(1 - (sigmoid(theta[:,0] + theta[:,1] * X[i,0] + theta[:,2] * y[i,0])))
     return sum / len(X)
 
-#print(computeCost(X,y,theta))
+print(computeCost(X,y,theta))
 
 
 def gradientDescent(X,y,theta,iters):
@@ -64,31 +64,31 @@ def gradientDescent(X,y,theta,iters):
         newtheta = theta
         d1 = (np.sum((np.sum(sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * y[:,0]) - y[:,0]))*1)/len(X))
         if d1 <= (-100):
-            newtheta[:,0] = newtheta[:,0] + 100
+            newtheta[:, 0] = newtheta[:,0] + 1
         elif d1 <= 0:
-            newtheta[:, 0] = newtheta[:, 0] + 1
+            newtheta[:, 0] = newtheta[:,0] + 0.1
         elif 100 <= d1:
-            newtheta[:, 0] = newtheta[:, 0] - 100
+            newtheta[:, 0] = newtheta[:,0] - 1
         else:
-            newtheta[:, 0] = newtheta[:, 0] - 1
+            newtheta[:, 0] = newtheta[:,0] - 0.1
         d2 = (np.sum((np.sum(sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * y[:,0]) - y[:,0]))*X[:,0])/len(X))
         if d2 <= (-100):
-            newtheta[:,1] = newtheta[:,1] + 100
+            newtheta[:,1] = newtheta[:,1] + 1
         elif d2 <= 0:
-            newtheta[:, 1] = newtheta[:, 1] + 1
+            newtheta[:, 1] = newtheta[:, 1] + 0.1
         elif 100 <= d2:
-            newtheta[:, 1] = newtheta[:, 1] - 100
-        else:
             newtheta[:, 1] = newtheta[:, 1] - 1
+        else:
+            newtheta[:, 1] = newtheta[:, 1] - 0.1
         d3 = (np.sum((np.sum(sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * y[:,0]) - y[:,0]))*y[:,0])/len(X))
         if d3 <= (-100):
-            newtheta[:,2] = newtheta[:,2] + 100
+            newtheta[:,2] = newtheta[:,2] + 1
         elif d3 <= 0:
-            newtheta[:, 2] = newtheta[:, 2] + 1
+            newtheta[:, 2] = newtheta[:, 2] + 0.1
         elif 100 <= d3:
-            newtheta[:, 2] = newtheta[:, 2] - 100
+            newtheta[:, 2] = newtheta[:, 2] - 1
         else:
-            newtheta[:, 2] = newtheta[:, 2] -1
+            newtheta[:, 2] = newtheta[:, 2] - 0.1
         newcost = computeCost(X, y, newtheta)
         if newcost < cost:
             cost = newcost
@@ -100,6 +100,15 @@ g ,cost = (gradientDescent(X,y,theta,iters))
 
 plt.plot(X, (g[:,0]+g[:,1]*X[:,0]+g[:,2]*y[:,0]), color='blue', linewidth=1)
 plt.show()
+
+
+
+
+
+
+
+
+
 
 
 
