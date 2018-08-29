@@ -1,4 +1,5 @@
 import math
+from copy import deepcopy
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -54,33 +55,37 @@ def computeCost(X,y,theta):
         sum += (-y[i,0]) * math.log(sigmoid(theta[:,0] + theta[:,1] * X[i,0] + theta[:,2] * X[i,1])) - (1-y[i,0]) * math.log(1 - (sigmoid(theta[:,0] + theta[:,1] * X[i,0] + theta[:,2] * X[i,1])))
     return sum / len(X)
 
-print(computeCost(X,y,theta))
+#print(computeCost(X,y,theta))
 
 
 def gradientDescent(X,y,theta,iters,alpha):
     cost = computeCost(X,y,theta)
-    theta = theta
-    thetheta = theta
+    thetheta = deepcopy(theta)
     for k in range(iters):
-        newtheta = theta
+        newtheta = deepcopy(theta)
         d1 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,1]) - y[:,0])*1)/len(X)
-        newtheta[:,0] = theta[:,0] - (alpha * d1)
+        newtheta[:,0] = theta[:,0] - alpha * d1
         d2 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,1]) - y[:,0])*X[:,0])/len(X)
-        newtheta[:,1] = theta[:, 1] - (alpha * d2)
+        newtheta[:,1] = theta[:, 1] - alpha * d2
         d3 = np.sum((sigmoid(theta[:,0] + theta[:,1] * X[:,0] + theta[:,2] * X[:,1]) - y[:,0])*X[:,1])/len(X)
-        newtheta[:,2] = theta[:, 2] - (alpha * d3)
+        newtheta[:,2] = theta[:, 2] - alpha * d3
         print(newtheta)
         newcost = computeCost(X, y, newtheta)
-        print(newcost)
         if newcost < cost:
             cost = newcost
-            thetheta = newtheta
-        theta = newtheta
+            thetheta = deepcopy(newtheta)
+        theta = deepcopy(newtheta)
     return thetheta, cost
 
 g ,cost = (gradientDescent(X,y,theta,iters,alpha))
 
-plt.plot((g[:,0]+g[:,1]*X+g[:,2]*y), color='blue', linewidth=1)
+plt.plot(X,(g[:,0]+g[:,1]*X[:,0]+g[:,2]*X[:,1]), color='blue', linewidth=1)
 plt.show()
+
+
+
+
+
+
 
 
