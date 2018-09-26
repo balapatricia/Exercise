@@ -6,6 +6,7 @@ import matplotlib.image as mpimg
 x = sio.loadmat('ex3data1.mat', squeeze_me=True)
 print(x)
 print(x['X'])
+print(x['y'])
 
 plt.imshow(x['X'])
 plt.show()
