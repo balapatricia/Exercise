@@ -1,12 +1,11 @@
 import scipy.io as sio
-import matplotlib as mp
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
+import skimage
+from skimage import io, data, filters
 
-x = sio.loadmat('ex3data1.mat', squeeze_me=True)
-print(x)
+x = sio.loadmat('ex3data1.mat')
+#print(x)
 print(x['X'])
 print(x['y'])
 
-plt.imshow(x['X'])
-plt.show()
+io.imshow(x['X'])
+io.show()
