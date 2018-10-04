@@ -1,11 +1,20 @@
+import numpy as np
 import scipy.io as sio
-import skimage
-from skimage import io, data, filters
+from skimage import io
 
-x = sio.loadmat('ex3data1.mat')
+file = sio.loadmat('ex3data1.mat')
 #print(x)
-print(x['X'])
-print(x['y'])
+X = file['X']
+y = file['y']
+print(X.shape)
 
-io.imshow(x['X'])
+#reshape 1 sor négyzetre, gyökkel kell nézni a sorokat!!!!
+
+n = np.random.randint(0,5000,54)
+ic = []
+for i in n:
+    print(i)
+    ic.append(np.reshape(X[i,:],(20,20)))
+
+io.imshow_collection(ic)
 io.show()
