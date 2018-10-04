@@ -8,8 +8,6 @@ X = file['X']
 y = file['y']
 print(X.shape)
 
-#reshape 1 sor négyzetre, gyökkel kell nézni a sorokat!!!!
-
 n = np.random.randint(0,5000,54)
 ic = []
 for i in n:
