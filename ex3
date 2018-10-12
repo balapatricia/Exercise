@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import scipy.io as sio
 from skimage import io
@@ -6,13 +7,33 @@ file = sio.loadmat('ex3data1.mat')
 #print(x)
 X = file['X']
 y = file['y']
-print(X.shape)
+
 
 n = np.random.randint(0,5000,54)
 ic = []
 for i in n:
-    print(i)
+    #print(i)
     ic.append(np.reshape(X[i,:],(20,20)))
 
 io.imshow_collection(ic)
-io.show()
+#io.show()
+
+
+theta=np.zeros([1,400+1])
+
+
+def sigmoid(z):
+    return 1 / ( 1 + (math.e ** (-z)))
+
+
+def computeCost(X,y,theta):
+    sum=0
+    for i in range(len(X)):
+        s = theta[:,0]
+        for j in range(1,len(theta)+1):
+            s += theta[:,j]*X[i,j-1]
+        sum += (-y[i, 0]) * math.log(sigmoid(s)) - (1 - y[i, 0]) * math.log(1 - (sigmoid(s)))
+        return sum / len(X)
+
+
+print(computeCost(X,y,theta))
