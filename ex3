@@ -10,6 +10,7 @@ file = sio.loadmat('ex3data1.mat')
 X = file['X']
 y = file['y']
 
+
 n = np.random.randint(0,5000,54)
 ic = []
 for i in n:
@@ -19,7 +20,9 @@ for i in n:
 io.imshow_collection(ic)
 #io.show()
 
+
 theta=np.zeros([1,400+1])
+
 
 
 def sigmoid(z):
@@ -35,20 +38,20 @@ def computeCost(X,y,theta):
         sum += (-y[i, 0]) * math.log(sigmoid(s)) - (1 - y[i, 0]) * math.log(1 - (sigmoid(s)))
         return sum / len(X)
 
+
 #print(computeCost(X,y,theta))
 
 
 def gradientDescent(X,y,theta):
-    b = np.zeros([401,1])
-    for i in range(1,len(b)+1):
+    b = np.zeros([400,1])
+    for i in range(len(b)):
         s = theta[:, 0]
         for j in range(1, len(theta) + 1):
-            s += theta[:, j] * X[i-1, j - 1]
-        s-=y[i-1]
-        b[i-1] = s
-    nt =  X.transpose() * b[1,:] / len(X)
-    for i in range(len(theta)):
-        theta[i] = np.sum(nt[i])
+            s += theta[:, j] * X[i, j - 1]
+        s-=y[i]
+        b[i] = s
+    theta =  X.transpose() * b / len(X)
+    print(theta.shape)
     thetaopt = fmin(computeCost(X,y,theta),theta)
     return thetaopt
 
