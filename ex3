@@ -50,8 +50,10 @@ def gradientDescent(X,y,theta):
             s += theta[:, j] * X[i, j - 1]
         s-=y[i]
         b[i] = s
-    theta =  X.transpose() * b / len(X)
-    print(theta.shape)
+    print(X.shape)
+    print(b.shape)
+    theta =  np.matmul(X,b) / len(X)
+    print(theta)
     thetaopt = fmin(computeCost(X,y,theta),theta)
     return thetaopt
 
