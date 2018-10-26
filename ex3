@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from numpy import *
 import scipy.io as sio
 from skimage import io
 from scipy.optimize import fmin
@@ -9,6 +10,8 @@ file = sio.loadmat('ex3data1.mat')
 #print(x)
 X = file['X']
 y = file['y']
+
+
 
 
 n = np.random.randint(0,5000,54)
@@ -50,8 +53,8 @@ def gradientDescent(X,y,theta):
             s += theta[:, j] * X[i, j - 1]
         s-=y[i]
         b[i] = s
-    theta =  np.matmul(X.transpose(),b) / len(X)
-    print(theta.shape)
+    theta =  (np.matmul(X.transpose(),b) / len(X)).transpose()
+    print(theta)
     thetaopt = fmin(computeCost(X,y,theta),theta)
     return thetaopt
 
