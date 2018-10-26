@@ -12,8 +12,6 @@ X = file['X']
 y = file['y']
 
 
-
-
 n = np.random.randint(0,5000,54)
 ic = []
 for i in n:
@@ -26,6 +24,8 @@ io.imshow_collection(ic)
 
 theta=np.zeros([1,400+1])
 
+k=np.ones([5000,1])
+X=append(k,X,1)
 
 
 def sigmoid(z):
@@ -54,10 +54,8 @@ def gradientDescent(X,y,theta):
         s-=y[i]
         b[i] = s
     theta =  (np.matmul(X.transpose(),b) / len(X)).transpose()
-    print(theta)
     thetaopt = fmin(computeCost(X,y,theta),theta)
     return thetaopt
-
 
 
 print(gradientDescent(X,y,theta))
