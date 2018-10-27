@@ -35,11 +35,14 @@ def sigmoid(z):
 def computeCost(X,y,theta):
     sum=0
     for i in range(len(X)):
+        # a következő három sor helyett használj mátrix belső szorzást s = np.dot(X[i,:],theta.transpose())
         s = theta[:,0]
         for j in range(1,len(theta)+1):
             s += theta[:,j]*X[i,j-1]
+        #debug-oláshoz mindig használj kiíratást, hogy lásd a változók értékét, most sokat segíthet a print(s)
+        #plussz majd valahol arra figyelni, hogy az y[i,0] az egy szám 1-től 10-ig, az osztály címke pedig vagy 1 vagy 0 ehhez a célfüggvény számításhoz
         sum += (-y[i, 0]) * math.log(sigmoid(s)) - (1 - y[i, 0]) * math.log(1 - (sigmoid(s)))
-        return sum / len(X)
+        return sum / len(X)   #ez itt biztosan rossz helyen van, mert már az első ciklus lépés után visszatér
 
 
 #print(computeCost(X,y,theta))
