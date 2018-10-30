@@ -3,13 +3,15 @@ import numpy as np
 from numpy import *
 import scipy.io as sio
 from skimage import io
-from scipy.optimize import fmin
+import scipy.optimize as opt
 from copy import deepcopy
 
 file = sio.loadmat('ex3data1.mat')
 #print(x)
 X = file['X']
 y = file['y']
+np.place(y,y == 10, 0)
+
 
 
 n = np.random.randint(0,5000,54)
@@ -23,6 +25,7 @@ io.imshow_collection(ic)
 
 
 theta=np.zeros([1,400+1])
+l = 1
 
 k=np.ones([5000,1])
 X=append(k,X,1)
@@ -32,30 +35,32 @@ def sigmoid(z):
     return 1 / ( 1 + (math.e ** (-z)))
 
 
-def computeCost(X,y,theta):
-    sum=0
+def computeCost(X,y,theta,l):
+    sum = 0
+    suM = 0
     for i in range(len(X)):
-        s = theta[:,0]
-        for j in range(1,len(theta)+1):
-            s += theta[:,j]*X[i,j-1]
+        s = np.dot(X[i, :], theta.transpose())
         sum += (-y[i, 0]) * math.log(sigmoid(s)) - (1 - y[i, 0]) * math.log(1 - (sigmoid(s)))
-        return sum / len(X)
+    for j in range(1,len(theta)):
+        suM += theta[:,j]**2
+    return sum / len(X) + l*suM / 2*len(X)
 
 
-#print(computeCost(X,y,theta))
+print(computeCost(X,y,theta,l))
 
 
-def gradientDescent(X,y,theta):
+def gradientDescent(X,y,theta,l):
     b = np.zeros([5000,1])
     for i in range(len(b)):
-        s = theta[:, 0]
-        for j in range(1, len(theta) + 1):
-            s += theta[:, j] * X[i, j - 1]
+        s = np.dot(X[i, :], theta.transpose())
         s-=y[i]
         b[i] = s
-    theta =  (np.matmul(X.transpose(),b) / len(X)).transpose()
-    thetaopt = fmin(computeCost(X,y,theta),theta)
+    theta = (np.matmul(X.transpose(), b) / len(X)).transpose()
+    for j in range(1,len(theta)):
+        theta[j,:] += l * theta[j,:] / len(X)
+    for c in range(0,10):
+        label = (y == c).astype(int)
+    thetaopt = fmin(computeCost(X, label, theta,l), theta)
     return thetaopt
 
-
-print(gradientDescent(X,y,theta))
+print(gradientDescent(X,y,theta,l))
