@@ -35,32 +35,29 @@ def sigmoid(z):
     return 1 / ( 1 + (math.e ** (-z)))
 
 
-def computeCost(X,y,theta,l):
+def computeCost(theta,X,y,l):
     sum = 0
     suM = 0
     for i in range(len(X)):
         s = np.dot(X[i, :], theta.transpose())
         sum += (-y[i, 0]) * math.log(sigmoid(s)) - (1 - y[i, 0]) * math.log(1 - (sigmoid(s)))
     for j in range(1,len(theta)):
-        suM += theta[:,j]**2
+        suM += theta[j]**2
     return sum / len(X) + l*suM / 2*len(X)
 
+#print(computeCost(theta,X,y,l))
 
-print(computeCost(X,y,theta,l))
 
-
-def gradientDescent(X,y,theta,l):
-    b = np.zeros([5000,1])
-    for i in range(len(b)):
-        s = np.dot(X[i, :], theta.transpose())
-        s-=y[i]
-        b[i] = s
-    theta = (np.matmul(X.transpose(), b) / len(X)).transpose()
-    for j in range(1,len(theta)):
-        theta[j,:] += l * theta[j,:] / len(X)
+def gradientDescent(theta,X,y,l):
+    thetaopt = np.zeros([1,400+1])
     for c in range(0,10):
         label = (y == c).astype(int)
-    thetaopt = fmin(computeCost(X, label, theta,l), theta)
+        thetaopt = opt.minimize(computeCost, theta, (X,label,l))
     return thetaopt
 
-print(gradientDescent(X,y,theta,l))
+
+
+thetaopt=(gradientDescent(theta,X,y,l))
+
+predictions = thetaopt.argmax(axis=1)
+print(str(100 * np.mean(predictions == y)) + "%")
