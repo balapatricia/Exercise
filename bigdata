@@ -1,0 +1,72 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+import pandas as pd
+import numpy as np
+#%%
+df = pd.read_csv("telecom_churn.csv")
+h1 = df.head()  #első pár sorát adja meg (tail az utolsókat) default értéke 5
+h1
+#%%
+df.shape
+#%%
+df.columns
+#%%
+df.info()
+#%%
+h2 = df["churn"]
+h2
+#%%
+df["churn"].dtype
+#%%
+df["churn"] = df["churn"].astype('int32')  #adatkonverzió, érdemes a logikai változókat számmá alakítani, hogy statisztikát végezhessünk rajta
+#%%
+df["churn"]
+#%%
+df.describe()
+#%%
+df["churn"].value_counts(normalize= True)
+#%%
+df.sort_values(by='state').head()
+#%%
+df.sort_values(by='state',ascending=False).head()
+#%%
+state_total = df.sort_values(by=['state','total eve calls'],ascending=[False,True]).head()
+state_total
+#%%
+df['churn'].mean()
+#%%
+df['total intl minutes'].mean().sum()
+#%%
+df[df['churn']==1].head()
+#%%
+df[df['churn']==1 && (df['area code']==415)].head()
+#%%
+df[df['churn']==1 && (df['area code']==415)]['total day minutes'].mean()
+#%%
+df.loc[:,'area code':'churn'].head()
+#%%
+df.iloc[5:10,2:6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
